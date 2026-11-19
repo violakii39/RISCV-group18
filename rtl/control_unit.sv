@@ -24,7 +24,7 @@ main_decoder main_dec (
     .RegWrite (RegWrite),
     .Branch (Branch),
     .ALUOp (ALUOp)
-)
+);
 
 alu_decoder alu_dec (
     .op (Instr[6:0]),
@@ -32,7 +32,7 @@ alu_decoder alu_dec (
     .funct7_5 (Instr[30]),
     .ALUOp (ALUOp),
     .ALUControl (ALUControl)
-)
+);
 
 assign PCSrc = Zero & Branch;
 endmodule
