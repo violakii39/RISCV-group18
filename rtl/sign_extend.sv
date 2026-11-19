@@ -13,7 +13,7 @@ always_comb begin
 
         2'b10: ImmExt = {{20{Instr[31]}},Instr[7],Instr[30:25],Instr[11:8],1'b0};
 
-        default: ImmExt = 32'b0
+        default: ImmExt = 32'b0;
     endcase
 end
 

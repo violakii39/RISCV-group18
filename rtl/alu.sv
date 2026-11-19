@@ -4,7 +4,8 @@ module alu#(
     input  logic [2:0]            ALUControl,
     input  logic [DATA_WIDTH-1:0] SrcA,
     input  logic [DATA_WIDTH-1:0] SrcB,
-    output logic [DATA_WIDTH-1:0] ALUResult
+    output logic [DATA_WIDTH-1:0] ALUResult,
+    output logic Zero
 );
 
 typedef enum logic [2:0]{
@@ -25,6 +26,7 @@ always_comb begin
         ALU_AND: ALUResult    = SrcA & SrcB;
         default: ALUResult    = '0;
     endcase
+    Zero = (ALUResult == '0);
 end
 
 endmodule

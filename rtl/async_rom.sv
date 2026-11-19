@@ -1,13 +1,14 @@
 module async_rom#(
     parameter   ADDRESS_WIDTH = 8,
+                DATA_WIDTH = 32,
                 PROGRAM_FILE = "program.mem"
 )
 (
     input logic [ADDRESS_WIDTH-1:0] A,
-    output logic [31:0]  RD
+    output logic [DATA_WIDTH-1:0]  RD
 );
 
-logic [31:0] rom_array [2**ADDRESS_WIDTH-1:0];
+logic [DATA_WIDTH-1:0] rom_array [2**ADDRESS_WIDTH-1:0];
 
 initial begin
     $display("Loading ROM...");
@@ -15,6 +16,6 @@ initial begin
 end
 
 always_comb begin
-    RD = rom_array[A]
+    RD = rom_array[A];
 end
 endmodule
