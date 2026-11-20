@@ -1,7 +1,7 @@
 module RV32I #(
     parameter   DATA_WIDTH = 32,
-                MEM_ADDRESS_WIDTH = 8;
-                REG_ADDRESS_WIDTH = 5;
+                MEM_ADDRESS_WIDTH = 8,
+                REG_ADDRESS_WIDTH = 5,
                 PROGRAM_FILE = "program.mem"
 
 ) (
@@ -11,9 +11,9 @@ module RV32I #(
 );
     
     logic [DATA_WIDTH-1:0] Instr, PC, ImmExt, SrcA, SrcB, RegRD2, ALUResult, PCTarget, PCPlus4, PCNext, ReadData, Result;
-    logic Zero, PCSrc, ResultSrc, MemWrite, ALUSrc, RegWrite//control unit signals
-    logic [1:0] ImmSrc//control unit signals
-    logic [2:0] ALUControl//control unit signals
+    logic Zero, PCSrc, ResultSrc, MemWrite, ALUSrc, RegWrite; //control unit signals
+    logic [1:0] ImmSrc; //control unit signals
+    logic [2:0] ALUControl; //control unit signals
 
 
 async_rom #(
@@ -23,7 +23,7 @@ async_rom #(
 ) instruction_memory (
     .A(PC[MEM_ADDRESS_WIDTH+1:2]),//pc increments by 4 each time
     .RD(Instr)
-)
+);
 
 control_unit control_unit (
     .Instr      (Instr),
@@ -38,8 +38,8 @@ control_unit control_unit (
 );
 
 sign_extend sign_extend (
-    .Instr(Instr)
-    .ImmSrc(ImmSrc)
+    .Instr(Instr),
+    .ImmSrc(ImmSrc),
     .ImmExt(ImmExt)
 );
 
@@ -81,8 +81,9 @@ reg_file #(
     .WE3(RegWrite),
     .WD3(Result),
     .RD1(SrcA),
-    .RD2(RegRD2)
-)
+    .RD2(RegRD2),
+    .a0(a0)
+);
 
 mux #(
     .DATA_WIDTH(DATA_WIDTH)
@@ -100,19 +101,20 @@ alu #(
     .SrcA(SrcA),
     .SrcB(SrcB),
     .ALUResult(ALUResult),
-    .Zero(zero)
+    .Zero(Zero)
 );
 
 data_memory #(
     .DATA_WIDTH(DATA_WIDTH),
-    .ADDRESS_WIDTH(MEM_ADDRESS_WIDTH)
+    .ADDRESS_WIDTH(DATA_WIDTH)
 ) data_memory (
-    .A(ALUResult[MEM_ADDRESS_WIDTH+1:2]),
-    .WD(RegRD2),
     .clk(clk),
+    .A(ALUResult),
+    .WD(RegRD2),
     .WE(MemWrite),
-    .RD(ReadData)
-)
+    .RD(ReadData),
+    .func3(Instr[14:12])
+);
 
 mux #(
     .DATA_WIDTH(DATA_WIDTH)
@@ -121,5 +123,5 @@ mux #(
     .in1(ReadData),
     .sel(ResultSrc),
     .out(Result)
-)
+);
 endmodule
