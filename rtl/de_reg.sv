@@ -18,6 +18,7 @@ module de_reg #(
     input logic[REG_ADDRESS_WIDTH-1:0] RdD,
     input logic[DATA_WIDTH-1:0] ImmExtD,
     input logic[DATA_WIDTH-1:0] PCPlus4D,
+    input logic[2:0] Funct3D,
 
     output logic RegWriteE,
     output logic[1:0] ResultSrcE,
@@ -31,7 +32,8 @@ module de_reg #(
     output logic[DATA_WIDTH-1:0] PCE,
     output logic[REG_ADDRESS_WIDTH-1:0] RdE,
     output logic[DATA_WIDTH-1:0] ImmExtE,
-    output logic[DATA_WIDTH-1:0] PCPlus4E
+    output logic[DATA_WIDTH-1:0] PCPlus4E,
+    output logic[2:0] Funct3E
 );
 
 always_ff @(posedge clk) begin
@@ -49,6 +51,7 @@ always_ff @(posedge clk) begin
         RdE<='0;
         ImmExtE<='0;
         PCPlus4E<='0;
+        Funct3E<='0;
     end
     else begin
         RegWriteE<=RegWriteD;
@@ -64,6 +67,7 @@ always_ff @(posedge clk) begin
         RdE<=RdD;
         ImmExtE<=ImmExtD;
         PCPlus4E<=PCPlus4D;
+        Funct3E<=Funct3D;
     end
 end
 

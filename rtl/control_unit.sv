@@ -1,9 +1,9 @@
 module control_unit
 (
     input logic [31:0] Instr,
-    input logic Zero,
-    output logic PCSrc,
-    output logic ResultSrc,
+    output logic Branch,
+    output logic Jump,
+    output logic [1:0] ResultSrc,
     output logic MemWrite,
     output logic [2:0] ALUControl,
     output logic ALUSrc,
@@ -12,7 +12,6 @@ module control_unit
 );
 
 logic [1:0] ALUOp;
-logic Branch;
 
 
 main_decoder main_dec (
@@ -22,6 +21,7 @@ main_decoder main_dec (
     .ALUSrc (ALUSrc),
     .ImmSrc (ImmSrc),
     .RegWrite (RegWrite),
+    .Jump(Jump),
     .Branch (Branch),
     .ALUOp (ALUOp)
 );
@@ -34,5 +34,4 @@ alu_decoder alu_dec (
     .ALUControl (ALUControl)
 );
 
-assign PCSrc = Zero & Branch;
 endmodule

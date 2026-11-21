@@ -11,6 +11,7 @@ module em_reg #(
     input logic[DATA_WIDTH-1:0] WriteDataE,
     input logic[4:0] RdE,
     input logic[DATA_WIDTH-1:0] PCPlus4E,
+    input logic[2:0] Funct3E,
 
     output logic RegWriteM,
     output logic[1:0] ResultSrcM,
@@ -18,7 +19,8 @@ module em_reg #(
     output logic[DATA_WIDTH-1:0] ALUResultM,
     output logic[DATA_WIDTH-1:0] WriteDataM,
     output logic[4:0] RdM,
-    output logic[DATA_WIDTH-1:0] PCPlus4M
+    output logic[DATA_WIDTH-1:0] PCPlus4M,
+    output logic[2:0] Funct3M
 );
 
 always_ff @(posedge clk) begin
@@ -30,6 +32,7 @@ always_ff @(posedge clk) begin
         WriteDataM<='0;
         RdM<='0;
         PCPlus4M<='0;
+        Funct3M<='0;
     end
     else begin
         RegWriteM<=RegWriteE;
@@ -39,6 +42,7 @@ always_ff @(posedge clk) begin
         WriteDataM<=WriteDataE;
         RdM<=RdE;
         PCPlus4M<=PCPlus4E;
+        Funct3M<=Funct3E;
     end
 end
 
